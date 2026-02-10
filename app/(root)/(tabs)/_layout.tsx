@@ -1,42 +1,29 @@
-import { Tabs } from "expo-router";
+import { Stack, Tabs } from "expo-router";
 
 export default function _Layout() {
   return (
-    <Tabs
-      screenOptions={{
-        tabBarShowLabel: false,
-        tabBarItemStyle: {
-          width: "100%",
-          height: "100%",
-          justifyContent: "center",
-          alignItems: "center",
-        },
-        tabBarStyle: {
-          backgroundColor: "#0f0d23",
-          borderRadius: 50,
-          marginHorizontal: 20,
-          marginBottom: 36,
-          height: 52,
-          position: "absolute",
-          overflow: "hidden",
-          borderWidth: 1,
-          borderColor: "#0f0d23",
-        },
-        headerShown: false,
-      }}
-    >
-      <Tabs.Screen
-        name="index"
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Tabs.Screen
-        name="explore"
-        options={{
-          headerShown: false,
-        }}
-      />
-    </Tabs>
+    // <Tabs
+    //   screenOptions={{
+    //     tabBarShowLabel: false,
+    //     tabBarItemStyle: {
+    //       width: "100%",
+    //       height: "100%",
+    //       justifyContent: "center",
+    //       alignItems: "center",
+    //     },
+    //   }}
+    // >
+    //   <Tabs.Screen name="home" />
+    //   <Tabs.Screen name="explore" />
+    //   <Tabs.Screen name="profile" />
+    //   <Tabs.Screen name="rides" />
+    // </Tabs>
+    <Stack>
+      <Stack.Screen name="index" options={{ headerShown: false }} />
+      <Stack.Screen name="chat" options={{ headerShown: false }} />
+      <Stack.Screen name="profile" options={{ headerShown: false }} />
+      <Stack.Screen name="rides" options={{ headerShown: false }} />
+      <Stack.Screen name="explore" options={{ headerShown: false }} />
+    </Stack>
   );
 }

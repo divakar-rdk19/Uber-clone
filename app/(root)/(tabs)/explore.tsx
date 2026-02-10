@@ -3,7 +3,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function ExploreScreen() {
   return (
-    <SafeAreaView>
+    <SafeAreaView className="flex-1 items-center justify-center">
       <Text>New Explore</Text>
     </SafeAreaView>
   );
