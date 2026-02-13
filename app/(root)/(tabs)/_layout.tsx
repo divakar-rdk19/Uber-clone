@@ -1,23 +1,12 @@
 import { Stack, Tabs } from "expo-router";
 
-export default function _Layout() {
+export const unstable_settings = {
+  // Use the name of the file you want to be the default
+  initialRouteName: "home",
+};
+
+export default function TabLayout() {
   return (
-    // <Tabs
-    //   screenOptions={{
-    //     tabBarShowLabel: false,
-    //     tabBarItemStyle: {
-    //       width: "100%",
-    //       height: "100%",
-    //       justifyContent: "center",
-    //       alignItems: "center",
-    //     },
-    //   }}
-    // >
-    //   <Tabs.Screen name="home" />
-    //   <Tabs.Screen name="explore" />
-    //   <Tabs.Screen name="profile" />
-    //   <Tabs.Screen name="rides" />
-    // </Tabs>
     <Stack>
       <Stack.Screen name="home" options={{ headerShown: false }} />
       <Stack.Screen name="chat" options={{ headerShown: false }} />

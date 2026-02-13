@@ -3,7 +3,7 @@ import { StatusBar } from "react-native";
 import { useFonts } from "expo-font";
 import "./global.css";
 
-export default function RootLayout() {
+export default function _Layout() {
   const [loaded] = useFonts({
     "Jakarta-Bold": require("../assets/fonts/PlusJakartaSans-Bold.ttf"),
     "Jakarta-ExtraBold": require("../assets/fonts/PlusJakartaSans-ExtraBold.ttf"),
@@ -17,11 +17,10 @@ export default function RootLayout() {
     <>
       <StatusBar hidden={true} />
       <Stack>
+        <Stack.Screen name="index" options={{ headerShown: false }} />
         <Stack.Screen name="(root)/(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="(auth)" options={{headerShown: false}} />
-        <Stack.Screen name="index" options={{headerShown: false}} />
+        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
       </Stack>
     </>
   );
 }
-
