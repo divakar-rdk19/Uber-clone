@@ -1,6 +1,8 @@
 import { Stack } from "expo-router";
 import { StatusBar } from "react-native";
 import { useFonts } from "expo-font";
+import { ClerkProvider } from "@clerk/clerk-expo";
+import { tokenCache } from  "@clerk/clerk-expo/token-cache"
 import "./global.css";
 
 export default function _Layout() {
@@ -15,12 +17,14 @@ export default function _Layout() {
   });
   return (
     <>
-      <StatusBar hidden={true} />
-      <Stack>
-        <Stack.Screen name="index" options={{ headerShown: false }} />
-        <Stack.Screen name="(root)/(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-      </Stack>
+      <ClerkProvider>
+        <StatusBar hidden={true} />
+        <Stack>
+          <Stack.Screen name="index" options={{ headerShown: false }} />
+          <Stack.Screen name="(root)/(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+        </Stack>
+      </ClerkProvider>
     </>
   );
 }

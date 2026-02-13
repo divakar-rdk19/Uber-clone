@@ -7,13 +7,13 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Swiper from "react-native-swiper";
 
 export default function WelcomeScreen() {
-    const swiperRef = useRef<Swiper>(null);
-    const [activeIndex, setActiveIndex] = useState(0);
-    const isLastSlide = activeIndex === onboarding.length -1;
+  const swiperRef = useRef<Swiper>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const isLastSlide = activeIndex === onboarding.length - 1;
   return (
     <SafeAreaView className="flex h-full items-center justify-between bg-white">
       <TouchableOpacity
-        className="flex w-full items-end justify-end p-5"
+        className="flex w-full items-end justify-end p-3"
         onPress={() => router.replace("/(auth)/sign-up")}
       >
         <Text className="text-[#0286ff] text-md font-JakartaBold">Skip</Text>
