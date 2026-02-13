@@ -2,17 +2,73 @@ import CustomButton from "@/components/CustomButton";
 import InputField from "@/components/InputField";
 import OAuth from "@/components/OAuth";
 import { icons, images } from "@/constants";
-import { Link } from "expo-router";
-import { useState } from "react";
-import { Image, ScrollView, Text, View } from "react-native";
+import { useSignIn } from "@clerk/clerk-expo";
+import { Link, router } from "expo-router";
+import { useState, useCallback} from "react";
+import { Alert, Image, ScrollView, Text, View } from "react-native";
+import { EmailCodeFactor } from "@clerk/types";
 
 export default function SginInScreen() {
   const [form, setForm] = useState({
     email: "",
     password: "",
   });
+  const {signIn, setActive, isLoaded} = useSignIn();
 
-  const onSignInPress = async () => {};
+  const onSignInPress = useCallback(async () => {
+    if (!isLoaded) return;
+
+    // Start the sign-in process using the email and password provided
+    try {
+      const signInAttempt = await signIn.create({
+        identifier: form.email,
+        password: form.password,
+      });
+
+      // If sign-in process is complete, set the created session as active
+      // and redirect the user
+      if (signInAttempt.status === "complete") {
+        await setActive({
+          session: signInAttempt.createdSessionId,
+          navigate: async ({ session }) => {
+            if (session?.currentTask) {
+              // Check for tasks and navigate to custom UI to help users resolve them
+              // See https://clerk.com/docs/guides/development/custom-flows/authentication/session-tasks
+              console.log(session?.currentTask);
+              return;
+            }
+
+            router.replace("/");
+          },
+        });
+      } else if (signInAttempt.status === "needs_second_factor") {
+        // Check if email_code is a valid second factor
+        // This is required when Client Trust is enabled and the user
+        // is signing in from a new device.
+        // See https://clerk.com/docs/guides/secure/client-trust
+        const emailCodeFactor = signInAttempt.supportedSecondFactors?.find(
+          (factor): factor is EmailCodeFactor =>
+            factor.strategy === "email_code",
+        );
+
+        if (emailCodeFactor) {
+          await signIn.prepareSecondFactor({
+            strategy: "email_code",
+            emailAddressId: emailCodeFactor.emailAddressId,
+          });
+          setShowEmailCode(true);
+        }
+      } else {
+        // If the status is not complete, check why. User may need to
+        // complete further steps.
+        console.error(JSON.stringify(signInAttempt, null, 2));
+      }
+    } catch (err: any) {
+      Alert.alert("Error:", err.errors[0].longMessage)
+      if(err.errors[0].longMessage==='You\'re already signed in.') router.replace('/(root)/(tabs)/home');
+    }
+  }, [isLoaded, signIn, setActive, router, form]);
+
   return (
     <ScrollView className="flex-1 bg-white">
       <View className="flex-1 bg-white">
