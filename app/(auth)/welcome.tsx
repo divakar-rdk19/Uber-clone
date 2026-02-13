@@ -13,7 +13,7 @@ export default function WelcomeScreen() {
   return (
     <SafeAreaView className="flex h-full items-center justify-between bg-white">
       <TouchableOpacity
-        className="flex w-full items-end justify-end p-3"
+        className="flex w-full items-end justify-end px-3"
         onPress={() => router.replace("/(auth)/sign-up")}
       >
         <Text className="text-[#0286ff] text-md font-JakartaBold">Skip</Text>

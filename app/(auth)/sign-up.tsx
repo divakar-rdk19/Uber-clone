@@ -30,11 +30,11 @@ export default function SginUpScreen() {
         emailAddress: form.email,
         password: form.password,
       });
-
       await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
 
       setVerification({...verification, state: "pending"});
     } catch (err:any) {
+      console.log("FULL CLERK ERROR:", JSON.stringify(err, null, 2));
       Alert.alert("Error", err.errors[0].longMessage);
     }
   };
@@ -133,6 +133,7 @@ export default function SginUpScreen() {
             <CustomButton
               title="Explore Ryde!"
               onPress={() => {
+                setShowSuccessModal(false);
                 router.replace("/(root)/(tabs)/home");
               }}
               className="mt-5"
@@ -143,7 +144,7 @@ export default function SginUpScreen() {
           isVisible={verification.state === "pending"}
           onModalHide={() =>
             {
-              if (verification.state === "success") setShowSuccessModal(true);
+              if (showSuccessModal) setShowSuccessModal(true);
             }
           }
         >

@@ -1,10 +1,5 @@
 import { Stack, Tabs } from "expo-router";
 
-export const unstable_settings = {
-  // Use the name of the file you want to be the default
-  initialRouteName: "home",
-};
-
 export default function TabLayout() {
   return (
     <Stack>

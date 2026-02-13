@@ -7,20 +7,19 @@
     "icon": "./assets/images/icon.png",
     "scheme": "com.divakar.ryde",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/images/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#2480ed"
+    },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.divakar.ryde",
-      "splash": {
-        "image": "./assets/images/splash.png",
-        "resizeMode": "contain",
-        "backgroundColor": "#ffffff"
-      }
+      "bundleIdentifier": "com.divakar.ryde"
     },
     "android": {
       "package": "com.divakar.ryde",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/splash.png",
+        "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
