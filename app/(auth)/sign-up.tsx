@@ -2,26 +2,28 @@ import CustomButton from "@/components/CustomButton";
 import InputField from "@/components/InputField";
 import OAuth from "@/components/OAuth";
 import { icons, images } from "@/constants";
+import { fetchAPI } from "@/lib/fetch";
 import { useSignUp } from "@clerk/clerk-expo";
 import { Link, router } from "expo-router";
 import { useState } from "react";
 import { Alert, Image, ScrollView, Text, View } from "react-native";
-import {ReactNativeModal} from "react-native-modal";
+import { ReactNativeModal } from "react-native-modal";
+import { Route } from "expo-router/build/Route";
 
 export default function SginUpScreen() {
   const [form, setForm] = useState({
-    name:"",
-    email:"",
+    name: "",
+    email: "",
     password: "",
   });
 
-  const {isLoaded, signUp, setActive} = useSignUp();
+  const { isLoaded, signUp, setActive } = useSignUp();
   const [verification, setVerification] = useState({
     state: "default",
     error: "",
-    code: ""
+    code: "",
   });
-  const [showSuccessModal, setShowSuccessModal]= useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   const onSignUpPress = async () => {
     if (!isLoaded) return;
@@ -32,8 +34,8 @@ export default function SginUpScreen() {
       });
       await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
 
-      setVerification({...verification, state: "pending"});
-    } catch (err:any) {
+      setVerification({ ...verification, state: "pending" });
+    } catch (err: any) {
       console.log("FULL CLERK ERROR:", JSON.stringify(err, null, 2));
       Alert.alert("Error", err.errors[0].longMessage);
     }
@@ -43,26 +45,36 @@ export default function SginUpScreen() {
     if (!isLoaded) return;
 
     try {
-      if(!verification.code.trim()){
+      if (!verification.code.trim()) {
         Alert.alert("Verfication code cannot be empty");
-        return
+        return;
       }
       const signUpAttempt = await signUp.attemptEmailAddressVerification({
         code: verification.code,
       });
 
       if (signUpAttempt.status === "complete") {
-        //TODO: create a database call to add user to the db
+        await fetchAPI("/(api)/user", {
+          method: "POST",
+          body: JSON.stringify({
+            name: form.name,
+            email: form.email,
+            clerkId: signUpAttempt.createdUserId,
+          }),
+        });
         await setActive({
           session: signUpAttempt.createdSessionId,
         });
-        setVerification({...verification, state: "success"})
+        setVerification({ ...verification, state: "success" });
       } else {
         console.error(JSON.stringify(signUpAttempt, null, 2));
-        setVerification({ ...verification, state: "failed", error: "Verification Failed!" });
+        setVerification({
+          ...verification,
+          state: "failed",
+          error: "Verification Failed!",
+        });
       }
-    } catch (err : any) {
-
+    } catch (err: any) {
       setVerification({
         ...verification,
         state: "failed",
@@ -111,7 +123,7 @@ export default function SginUpScreen() {
         />
         <OAuth />
         <Link
-          href="/(auth)/sign-in"
+          href="/sign-in"
           className="text-lg text-center text-general-200 mt-10"
         >
           <Text>Already have an Account? </Text>
@@ -142,11 +154,9 @@ export default function SginUpScreen() {
         </ReactNativeModal>
         <ReactNativeModal
           isVisible={verification.state === "pending"}
-          onModalHide={() =>
-            {
-              if (showSuccessModal) setShowSuccessModal(true);
-            }
-          }
+          onModalHide={() => {
+            if (verification.state === "success") setShowSuccessModal(true);
+          }}
         >
           <View className="bg-white px-7 py-9 rounded-2xl min-h-[300px]">
             <Text className="text-2xl font-JakartaExtraBold mb-2">
@@ -162,12 +172,20 @@ export default function SginUpScreen() {
               placeholder="Enter your verification code here"
               value={verification.code}
               keyboardType="numeric"
-              onChangeText={(code) => setVerification({...verification, code})}
+              onChangeText={(code) =>
+                setVerification({ ...verification, code })
+              }
             ></InputField>
             {verification.error && (
-              <Text className="text-sm text-red-500 font-Jakarta mt-1">{verification.error}</Text>
+              <Text className="text-sm text-red-500 font-Jakarta mt-1">
+                {verification.error}
+              </Text>
             )}
-            <CustomButton title="Verify" onPress={onVerifyPress} className="mt-5 bg-success-500"/>
+            <CustomButton
+              title="Verify"
+              onPress={onVerifyPress}
+              className="mt-5 bg-success-500"
+            />
           </View>
         </ReactNativeModal>
       </View>
