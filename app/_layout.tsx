@@ -2,7 +2,6 @@ import { Stack } from "expo-router";
 import { StatusBar } from "react-native";
 import { useFonts } from "expo-font";
 import { ClerkProvider } from "@clerk/clerk-expo";
-import { tokenCache } from "@clerk/clerk-expo/token-cache";
 import "./global.css";
 
 export default function _Layout() {

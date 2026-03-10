@@ -6,8 +6,6 @@ import { useSignIn } from "@clerk/clerk-expo";
 import { Link, router } from "expo-router";
 import { useState, useCallback } from "react";
 import { Alert, Image, ScrollView, Text, View } from "react-native";
-import { EmailCodeFactor } from "@clerk/types";
-import { ReactNativeModal } from "react-native-modal";
 
 export default function SginInScreen() {
   const [form, setForm] = useState({

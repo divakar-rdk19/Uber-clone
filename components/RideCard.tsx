@@ -59,10 +59,9 @@ export default function RidCard({ ride }: { ride: Ride }) {
               Payment Status
             </Text>
             <Text
-              className={`text-md font-JakartaMedium ${ride.payment_status === "paid" ? "text-green-500" : "text-red-500"}`}
+              className={`text-md capitalize font-JakartaMedium ${ride.payment_status === "paid" ? "text-green-500" : "text-red-500"}`}
             >
-              {ride.payment_status.slice(0, 1).toUpperCase() +
-                ride.payment_status.slice(1)}
+              {ride.payment_status}
             </Text>
           </View>
         </View>
