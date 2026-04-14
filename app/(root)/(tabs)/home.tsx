@@ -167,7 +167,7 @@ export default function HomeScreen() {
               handlePress={handleDestinationPress}
             />
             <Text className="text-xl font-JakartaBold">
-              Your Current Location: Kathmandu, Nepal
+              Your Current Location
             </Text>
             <View className="flex flex-row items-center bg-transparent h-[300px]">
               <Map />
